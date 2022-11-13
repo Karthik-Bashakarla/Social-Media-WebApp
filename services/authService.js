@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import User from "../models/User";
+import User from "../models/User.js";
 
 // Registration
 const registerUser = async (req, res) => {
@@ -24,13 +24,17 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    !user && res.status(404).json("User not found");
+    if (!user) {
+      return res.status(404).json("User not found");
+    }
 
     const validPassword = await bcrypt.compare(
       req.body.password,
       user.password
     );
-    !validPassword && res.status(400).json("Wrong Credentials");
+    if (!validPassword) {
+      return res.status(400).json("Wrong Credentials");
+    }
 
     res.status(200).json(user);
   } catch (err) {
