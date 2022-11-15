@@ -17,7 +17,7 @@ app.use(helmet());
 app.use(cors());
 
 app.use("/api/users", userRoute);
-app.use("/api/user", authRoute);
+app.use("/api/auth", authRoute);
 
 connectToMongoDB()
   .then(() => {
